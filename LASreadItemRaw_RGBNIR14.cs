@@ -12,8 +12,8 @@
 //
 //  COPYRIGHT:
 //
-//    (c) 2005-2012, martin isenburg, rapidlasso - tools to catch reality
-//    (c) of the C# port 2014 by Shinta <shintadono@googlemail.com>
+//    (c) 2007-2017, martin isenburg, rapidlasso - tools to catch reality
+//    (c) of the C# port 2014-2019 by Shinta <shintadono@googlemail.com>
 //
 //    This is free software; you can redistribute and/or modify it under the
 //    terms of the GNU Lesser General Licence as published by the Free Software
@@ -26,23 +26,17 @@
 //
 //===============================================================================
 
-using System;
 using System.IO;
 
-namespace laszip.net
+namespace LASzip.Net
 {
 	class LASreadItemRaw_RGBNIR14 : LASreadItemRaw
 	{
 		public LASreadItemRaw_RGBNIR14() { }
 
-		public override void read(laszip_point item)
+		public override void read(laszip_point item, ref uint context) // context is unused
 		{
-			byte[] buf=new byte[8];
-			if(instream.Read(buf, 0, 8)!=8) throw new EndOfStreamException();
-			item.rgb[0]=BitConverter.ToUInt16(buf, 0);
-			item.rgb[1]=BitConverter.ToUInt16(buf, 2);
-			item.rgb[2]=BitConverter.ToUInt16(buf, 4);
-			item.rgb[3]=BitConverter.ToUInt16(buf, 6);
+			if (!instream.get16bits(item.rgb, 4)) throw new EndOfStreamException();
 		}
 	}
 }

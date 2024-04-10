@@ -1,4 +1,4 @@
-laszip.net
+LASzip.Net
 ==========
 
 The LASzip LiDAR compressor packaged as a simple stand-alone assembly for
@@ -20,7 +20,8 @@ https://github.com/shintadono/laszip.net
 
 ATTENTION: This port is not a complete port of the LASzip library. It does not
 contain the example provided in it (but has some examples of it's own), and
-you can't create version 1 LAZ files, while reading version 1 is still possible.
+you can't create version 1 and 3 LAZ files, while reading version 1 and 3 is
+still possible.
 
 
 **LICENSE AGREEMENT (for LASzip.Net LiDAR compression)**
@@ -34,7 +35,9 @@ you can't create version 1 LAZ files, while reading version 1 is still possible.
 
 **PROGRAMMERS**
 
-  martin@rapidlasso.com (https://github.com/rapidlasso)
+  Martin Isenburg (https://github.com/rapidlasso)
+
+  Howard Butler (https://github.com/hobu)
 
   shintadono@googlemail.com (https://github.com/shintadono)
 
@@ -42,9 +45,14 @@ you can't create version 1 LAZ files, while reading version 1 is still possible.
 
   Jean-Noël Pioche
 
+  Michael P. Gerlek (https://github.com/mpgerlek)
+
+  Jimmy (https://github.com/jimmyfishbean)
+
+
 **COPYRIGHT**
 
-  (c) 2007-2014, martin isenburg, rapidlasso - fast tools to catch reality
+  (c) 2007-2018, martin isenburg, rapidlasso - fast tools to catch reality
 
-  (c) of C# port 2014-2017 by Shinta <shintadono@googlemail.com>
+  (c) of C# port 2014-2019 by Shinta <shintadono@googlemail.com>
 

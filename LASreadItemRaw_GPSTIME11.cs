@@ -12,8 +12,8 @@
 //
 //  COPYRIGHT:
 //
-//    (c) 2005-2012, martin isenburg, rapidlasso - tools to catch reality
-//    (c) of the C# port 2014 by Shinta <shintadono@googlemail.com>
+//    (c) 2007-2017, martin isenburg, rapidlasso - tools to catch reality
+//    (c) of the C# port 2014-2019 by Shinta <shintadono@googlemail.com>
 //
 //    This is free software; you can redistribute and/or modify it under the
 //    terms of the GNU Lesser General Licence as published by the Free Software
@@ -26,22 +26,17 @@
 //
 //===============================================================================
 
-using System;
 using System.IO;
 
-namespace laszip.net
+namespace LASzip.Net
 {
 	class LASreadItemRaw_GPSTIME11 : LASreadItemRaw
 	{
 		public LASreadItemRaw_GPSTIME11() { }
 
-		public override void read(laszip_point item)
+		public override void read(laszip_point item, ref uint context) // context is unused
 		{
-			if(instream.Read(buffer, 0, 8)!=8) throw new EndOfStreamException();
-
-			item.gps_time=BitConverter.ToDouble(buffer, 0);
+			if (!instream.get64bits(out item.gps_time)) throw new EndOfStreamException();
 		}
-
-		byte[] buffer=new byte[8];
 	}
 }

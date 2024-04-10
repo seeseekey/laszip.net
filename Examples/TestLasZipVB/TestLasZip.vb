@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports laszip.net
 
 Module TestLasZip
 
@@ -17,9 +16,9 @@ Module TestLasZip
 	Private FileName As String = Path.GetTempPath + "Test.laz"
 
 	Private Sub ReadLaz()
-		Dim LazCls As New laszip_dll
+		Dim LazCls As New LASzip.Net.laszip
 		Dim IsCompressed As Boolean = True
-		LazCls.laszip_open_reader(FileName, IsCompressed)
+		LazCls.open_reader(FileName, IsCompressed)
 		Dim NumPts As Int32 = LazCls.header.number_of_point_records
 		' Check some header values
 		Debug.Print(LazCls.header.min_x)
@@ -35,9 +34,9 @@ Module TestLasZip
 		' Loop through number of points indicated
 		For PntInd As Integer = 0 To NumPts - 1
 			' Read the point
-			LazCls.laszip_read_point()
+			LazCls.read_point()
 			' Get precision coordinates
-			LazCls.laszip_get_coordinates(CrdArr)
+			LazCls.get_coordinates(CrdArr)
 			PntObj.X = CrdArr(0)
 			PntObj.Y = CrdArr(1)
 			PntObj.Z = CrdArr(2)
@@ -45,7 +44,7 @@ Module TestLasZip
 			ClaVal = LazCls.point.classification
 		Next
 		' Close the reader
-		LazCls.laszip_close_reader()
+		LazCls.close_reader()
 	End Sub
 
 	Private Sub WriteLaz()
@@ -55,8 +54,8 @@ Module TestLasZip
 		PntObj.X = 1000.0 : PntObj.Y = 2000.0 : PntObj.Z = 100.0 : PntLst.Add(PntObj)
 		PntObj.X = 5000.0 : PntObj.Y = 6000.0 : PntObj.Z = 200.0 : PntLst.Add(PntObj)
 		'
-		Dim LazCls As New laszip_dll
-		Dim LazErr As Integer = LazCls.laszip_clean
+		Dim LazCls As New LASzip.Net.laszip
+		Dim LazErr As Integer = LazCls.clean
 		If LazErr = 0 Then
 			' Number of point records needs to be set
 			LazCls.header.number_of_point_records = PntLst.Count
@@ -68,7 +67,7 @@ Module TestLasZip
 			LazCls.header.max_y = PntLst(1).Y
 			LazCls.header.max_z = PntLst(1).Z
 			' Open the writer and test for errors
-			LazErr = LazCls.laszip_open_writer(FileName, True)
+			LazErr = LazCls.open_writer(FileName, True)
 			If LazErr = 0 Then
 				Dim CrdArr As Double() = New Double(2) {}
 				For Each PntLoc As Point3D In PntLst
@@ -76,23 +75,23 @@ Module TestLasZip
 					CrdArr(1) = PntLoc.Y
 					CrdArr(2) = PntLoc.Z
 					' Set the coordinates in the LazCls object
-					LazCls.laszip_set_coordinates(CrdArr)
+					LazCls.set_coordinates(CrdArr)
 					' Set the classification to ground
 					LazCls.point.classification = 2
 					' Write the point to the file
-					LazErr = LazCls.laszip_write_point()
+					LazErr = LazCls.write_point()
 					If LazErr <> 0 Then
 						Exit For
 					End If
 				Next
 				' Close the writer to release the file (OS lock)
-				LazErr = LazCls.laszip_close_writer()
+				LazErr = LazCls.close_writer()
 				LazCls = Nothing
 			End If
 		End If
 		If LazErr <> 0 Then
 			' Show last error that occurred
-			Debug.Print(LazCls.laszip_get_error)
+			Debug.Print(LazCls.get_error)
 		End If
 		' --- Upon completion, file should be 389 bytes
 	End Sub

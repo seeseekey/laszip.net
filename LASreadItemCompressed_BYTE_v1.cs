@@ -12,8 +12,8 @@
 //
 //  COPYRIGHT:
 //
-//    (c) 2005-2012, martin isenburg, rapidlasso - tools to catch reality
-//    (c) of the C# port 2014 by Shinta <shintadono@googlemail.com>
+//    (c) 2007-2017, martin isenburg, rapidlasso - tools to catch reality
+//    (c) of the C# port 2014-2019 by Shinta <shintadono@googlemail.com>
 //
 //    This is free software; you can redistribute and/or modify it under the
 //    terms of the GNU Lesser General Licence as published by the Free Software
@@ -29,26 +29,26 @@
 using System;
 using System.Diagnostics;
 
-namespace laszip.net
+namespace LASzip.Net
 {
 	class LASreadItemCompressed_BYTE_v1 : LASreadItemCompressed
 	{
 		public LASreadItemCompressed_BYTE_v1(ArithmeticDecoder dec, uint number)
 		{
 			// set decoder
-			Debug.Assert(dec!=null);
-			this.dec=dec;
-			Debug.Assert(number!=0);
-			this.number=number;
+			Debug.Assert(dec != null);
+			this.dec = dec;
+			Debug.Assert(number != 0);
+			this.number = number;
 
 			// create models and integer compressors
-			ic_byte=new IntegerCompressor(dec, 8, number);
+			ic_byte = new IntegerCompressor(dec, 8, number);
 
 			// create last item
-			last_item=new byte[number];
+			last_item = new byte[number];
 		}
 
-		public override bool init(laszip_point item)
+		public override bool init(laszip_point item, ref uint context) // context is unused
 		{
 			// init state
 
@@ -61,17 +61,17 @@ namespace laszip.net
 			return true;
 		}
 
-		public override void read(laszip_point item)
+		public override void read(laszip_point item, ref uint context) // context is unused
 		{
-			for(uint i=0; i<number; i++)
+			for (uint i = 0; i < number; i++)
 			{
-				last_item[i]=item.extra_bytes[i]=(byte)(ic_byte.decompress(last_item[i], i));
+				last_item[i] = item.extra_bytes[i] = (byte)ic_byte.decompress(last_item[i], i);
 			}
 		}
 
 		ArithmeticDecoder dec;
 		uint number;
-		byte[] last_item;
+		readonly byte[] last_item;
 
 		IntegerCompressor ic_byte;
 	}
